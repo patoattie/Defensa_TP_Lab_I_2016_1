@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1529440871 source:c:\test\pattie\tp4\arraylist\examples\example_4\src\arraylist.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"../inc/ArrayList.h"
+
+1529436768 c:\test\pattie\tp4\arraylist\examples\example_4\inc\arraylist.h
+
