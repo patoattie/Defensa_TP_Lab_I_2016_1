@@ -3,108 +3,330 @@
 #include "../TP4/arraylist/examples/example_4/inc/ArrayList.h"
 #include "tramites.h"
 
-eTramiteUrgente* nuevoTramiteUrgente(void)
+int pedirDni(void)
+{
+    int dniCliente;
+
+    printf("Ingrese su DNI: ");
+    scanf("%d", &dniCliente);
+
+    return dniCliente;
+}
+
+//Urgentes
+eTramiteUrgente* eTramiteUrgente_nuevo(void)
 {
     eTramiteUrgente* returnAux;
     returnAux = (eTramiteUrgente*)malloc(sizeof(eTramiteUrgente));
     return returnAux;
 }
 
-int agregarTramiteUrgente(ArrayList* listaTramite)
+int eTramiteUrgente_agregar(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos)
 {
     int retorno = -1;
-    int huboError = 0;
     int guardoDato;
-    char nombre[TAM_NOMBRE];
-    eTramiteUrgente* unTramite = employee_new();
+    int dniCliente;
+    int turnoCliente;
+    int huboError = 0;
+    eTramiteUrgente* unTramite = eTramiteUrgente_nuevo();
 
-    retorno = 0;
+    dniCliente = pedirDni();
 
-    if(huboError == 0)
+    guardoDato = eTramiteUrgente_setDni(unTramite, dniCliente);
+    if(guardoDato < 0)
     {
-        pedirString("Ingrese nombre del empleado: ", nombre, TAM_NOMBRE);
-        if(strcmp(nombre, "") == 0)
-        {
-            printf("El dato es obligatorio, por favor reingrese\n");
-            huboError = 1;
-        }
+        huboError = 1;
+    }
+
+    turnoCliente = eTramiteUrgente_proximoTurno(listaNoAtendidos, listaAtendidos);
+
+    guardoDato = eTramiteUrgente_setTurno(unTramite, turnoCliente);
+    if(guardoDato < 0)
+    {
+        huboError = 1;
     }
 
     if(huboError == 0)
     {
-        pedirString("Ingrese apellido del empleado: ", apellido, TAM_APELLIDO);
-        if(strcmp(apellido, "") == 0)
-        {
-            printf("El dato es obligatorio, por favor reingrese\n");
-            huboError = 1;
-        }
-    }
-
-    if(huboError == 0)
-    {
-        guardoDato = employee_setId(unEmpleado, employee_nuevoId(arrayEmpleados));
-        if(guardoDato < 0)
+        guardoDato = al_add(listaNoAtendidos, unTramite);
+        if(guardoDato < 0) //Hubo error
         {
             huboError = 1;
-        }
-
-        guardoDato = employee_setName(unEmpleado, nombre);
-        if(guardoDato < 0)
-        {
-            huboError = 1;
-        }
-
-        guardoDato = employee_setLastName(unEmpleado, apellido);
-        if(guardoDato < 0)
-        {
-            huboError = 1;
-        }
-
-        guardoDato = employee_setIsEmpty(unEmpleado, 0);
-        if(guardoDato < 0)
-        {
-            huboError = 1;
-        }
-
-        if(huboError == 0)
-        {
-            guardoDato = al_add(arrayEmpleados, unEmpleado);
-            if(guardoDato < 0) //Hubo error
-            {
-                huboError = 1;
-                printf("Error al guardar los datos en el array list\n");
-            }
-        }
-        else
-        {
-            printf("Error al guardar los datos en la estructura\n");
+            printf("Error al guardar los datos en el array list\n");
         }
     }
     else
     {
-        printf("Error de carga de datos, por favor reingrese\n");
+        printf("Error al guardar los datos en la estructura\n");
     }
 
     if(huboError == 0)
     {
-        retorno = 1;
+        retorno = 0;
     }
 
     return retorno;
 }
 
-int setDni(void)
+int eTramiteUrgente_setDni(eTramiteUrgente* this, int dniCliente)
 {
     int retorno = -1;
-    int dniCliente;
 
-    printf("Ingrese su DNI: ");
-    scanf("%d", &dniCliente);
-
-    if(dniCliente > 0)
+    if(dniCliente > 0 && this != NULL)
     {
-        retorno = dniCliente;
+        this->dni = dniCliente;
+        retorno = 0;
     }
+
+    return retorno;
+}
+
+int eTramiteUrgente_setTurno(eTramiteUrgente* this, int turnoCliente)
+{
+    int retorno = -1;
+
+    if(turnoCliente > 0 && this != NULL)
+    {
+        this->turno = turnoCliente;
+        retorno = 0;
+    }
+
+    return retorno;
+}
+
+void eTramiteUrgente_borrar(eTramiteUrgente* this)
+{
+    if(this != NULL)
+    {
+        free(this);
+    }
+}
+
+int eTramiteUrgente_proximoTurno(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos)
+{
+    int proximoTurno;
+    int posicionUltimoAtendido;
+    int posicionUltimoNoAtendido;
+    int turnoUltimoAtendido = 0;
+    int turnoUltimoNoAtendido = 0;
+    eTramiteUrgente* tramiteAtendido = NULL;//eTramiteUrgente_nuevo();
+    eTramiteUrgente* tramiteNoAtendido = NULL;//eTramiteUrgente_nuevo();
+
+    if(listaNoAtendidos != NULL && listaAtendidos != NULL)
+    {
+        if(al_isEmpty(listaAtendidos) == 0)
+        {
+            posicionUltimoAtendido = al_len(listaAtendidos) - 1;
+            tramiteAtendido = al_get(listaAtendidos, posicionUltimoAtendido);
+            turnoUltimoAtendido = tramiteAtendido->turno;
+        }
+
+        if(al_isEmpty(listaNoAtendidos) == 0)
+        {
+            posicionUltimoNoAtendido = al_len(listaNoAtendidos) - 1;
+            tramiteNoAtendido = al_get(listaNoAtendidos, posicionUltimoNoAtendido);
+            turnoUltimoNoAtendido = tramiteNoAtendido->turno;
+        }
+    }
+
+    if(turnoUltimoAtendido > turnoUltimoNoAtendido)
+    {
+        proximoTurno = turnoUltimoAtendido;
+    }
+    else
+    {
+        proximoTurno = turnoUltimoNoAtendido;
+    }
+
+    proximoTurno++;
+
+    //eTramiteUrgente_borrar(tramiteAtendido);
+    //eTramiteUrgente_borrar(tramiteNoAtendido);
+
+    return proximoTurno;
+}
+
+void eTramiteUrgente_imprimir(eTramiteUrgente* this)
+{
+    printf("%d - %d\n", this->dni, this->turno);
+}
+
+int eTramiteUrgente_listar(ArrayList* listaNoAtendidos)
+{
+    int i;
+    int retorno = -1;
+    eTramiteUrgente* unTramite = NULL;//eTramiteUrgente_nuevo();
+
+    for(i = 0; i < al_len(listaNoAtendidos); i++)
+    {
+        unTramite = (eTramiteUrgente*)al_get(listaNoAtendidos, i);
+        if(unTramite != NULL)
+        {
+            eTramiteUrgente_imprimir(unTramite);
+            retorno = 0;
+        }
+    }
+
+    //eTramiteUrgente_borrar(unTramite);
+
+    return retorno;
+}
+
+//Regulares
+eTramiteRegular* eTramiteRegular_nuevo(void)
+{
+    eTramiteRegular* returnAux;
+    returnAux = (eTramiteRegular*)malloc(sizeof(eTramiteRegular));
+    return returnAux;
+}
+
+int eTramiteRegular_agregar(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos)
+{
+    int retorno = -1;
+    int guardoDato;
+    int dniCliente;
+    int turnoCliente;
+    int huboError = 0;
+    eTramiteRegular* unTramite = eTramiteRegular_nuevo();
+
+    dniCliente = pedirDni();
+
+    guardoDato = eTramiteRegular_setDni(unTramite, dniCliente);
+    if(guardoDato < 0)
+    {
+        huboError = 1;
+    }
+
+    turnoCliente = eTramiteRegular_proximoTurno(listaNoAtendidos, listaAtendidos);
+
+    guardoDato = eTramiteRegular_setTurno(unTramite, turnoCliente);
+    if(guardoDato < 0)
+    {
+        huboError = 1;
+    }
+
+    if(huboError == 0)
+    {
+        guardoDato = al_add(listaNoAtendidos, unTramite);
+        if(guardoDato < 0) //Hubo error
+        {
+            huboError = 1;
+            printf("Error al guardar los datos en el array list\n");
+        }
+    }
+    else
+    {
+        printf("Error al guardar los datos en la estructura\n");
+    }
+
+    if(huboError == 0)
+    {
+        retorno = 0;
+    }
+
+    return retorno;
+}
+
+int eTramiteRegular_setDni(eTramiteRegular* this, int dniCliente)
+{
+    int retorno = -1;
+
+    if(dniCliente > 0 && this != NULL)
+    {
+        this->dni = dniCliente;
+        retorno = 0;
+    }
+
+    return retorno;
+}
+
+int eTramiteRegular_setTurno(eTramiteRegular* this, int turnoCliente)
+{
+    int retorno = -1;
+
+    if(turnoCliente > 0 && this != NULL)
+    {
+        this->turno = turnoCliente;
+        retorno = 0;
+    }
+
+    return retorno;
+}
+
+void eTramiteRegular_borrar(eTramiteRegular* this)
+{
+    if(this != NULL)
+    {
+        free(this);
+    }
+}
+
+int eTramiteRegular_proximoTurno(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos)
+{
+    int proximoTurno;
+    int posicionUltimoAtendido;
+    int posicionUltimoNoAtendido;
+    int turnoUltimoAtendido = 0;
+    int turnoUltimoNoAtendido = 0;
+    eTramiteRegular* tramiteAtendido = NULL;//eTramiteRegular_nuevo();
+    eTramiteRegular* tramiteNoAtendido = NULL;//eTramiteRegular_nuevo();
+
+    if(listaNoAtendidos != NULL && listaAtendidos != NULL)
+    {
+        if(al_isEmpty(listaAtendidos) == 0)
+        {
+            posicionUltimoAtendido = al_len(listaAtendidos) - 1;
+            tramiteAtendido = al_get(listaAtendidos, posicionUltimoAtendido);
+            turnoUltimoAtendido = tramiteAtendido->turno;
+        }
+
+        if(al_isEmpty(listaNoAtendidos) == 0)
+        {
+            posicionUltimoNoAtendido = al_len(listaNoAtendidos) - 1;
+            tramiteNoAtendido = al_get(listaNoAtendidos, posicionUltimoNoAtendido);
+            turnoUltimoNoAtendido = tramiteNoAtendido->turno;
+        }
+    }
+
+    if(turnoUltimoAtendido > turnoUltimoNoAtendido)
+    {
+        proximoTurno = turnoUltimoAtendido;
+    }
+    else
+    {
+        proximoTurno = turnoUltimoNoAtendido;
+    }
+
+    proximoTurno++;
+
+    //eTramiteRegular_borrar(tramiteAtendido);
+    //eTramiteRegular_borrar(tramiteNoAtendido);
+
+    return proximoTurno;
+}
+
+void eTramiteRegular_imprimir(eTramiteRegular* this)
+{
+    printf("%d - %d\n", this->dni, this->turno);
+}
+
+int eTramiteRegular_listar(ArrayList* listaNoAtendidos)
+{
+    int i;
+    int retorno = -1;
+    eTramiteRegular* unTramite = NULL;//eTramiteRegular_nuevo();
+
+    for(i = 0; i < al_len(listaNoAtendidos); i++)
+    {
+        unTramite = (eTramiteRegular*)al_get(listaNoAtendidos, i);
+        if(unTramite != NULL)
+        {
+            eTramiteRegular_imprimir(unTramite);
+            retorno = 0;
+        }
+    }
+
+    //eTramiteRegular_borrar(unTramite);
 
     return retorno;
 }

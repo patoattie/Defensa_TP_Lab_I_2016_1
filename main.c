@@ -3,6 +3,15 @@
 #include "../TP4/arraylist/examples/example_4/inc/ArrayList.h"
 #include "tramites.h"
 
+/*
+Datos de prueba
+444 - 1 UR
+222 - 1 NO
+333 - 2 UR
+888 - 3 UR
+777 - 2 NO
+*/
+
 int main()
 {
     char seguir = 's';
@@ -12,6 +21,8 @@ int main()
     ArrayList* regulares = al_newArrayList();
     ArrayList* urgentesAtendidos = al_newArrayList();
     ArrayList* regularesAtendidos = al_newArrayList();
+
+    int retornoOpcion;
 
     while(seguir == 's')
     {
@@ -29,6 +40,33 @@ int main()
         switch(opcion)
         {
             case 1:
+                retornoOpcion = eTramiteUrgente_agregar(urgentes, urgentesAtendidos);
+                if(retornoOpcion == 0)
+                {
+                    printf("\nAlta de Tramite Urgente OK");
+                }
+                break;
+            case 2:
+                retornoOpcion = eTramiteRegular_agregar(regulares, regularesAtendidos);
+                if(retornoOpcion == 0)
+                {
+                    printf("\nAlta de Tramite Regular OK");
+                }
+                break;
+            case 4:
+                printf("\nTRAMITES URGENTES:\n");
+                retornoOpcion = eTramiteUrgente_listar(urgentes);
+                if(retornoOpcion < 0)
+                {
+                    printf("\nNo hay Tramites Urgentes para listar");
+                }
+
+                printf("\n\nTRAMITES REGULARES:\n");
+                retornoOpcion = eTramiteRegular_listar(regulares);
+                if(retornoOpcion < 0)
+                {
+                    printf("\nNo hay Tramites Regulares para listar");
+                }
                 break;
             case 6:
                 seguir = 'n';
