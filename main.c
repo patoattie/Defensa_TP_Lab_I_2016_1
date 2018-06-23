@@ -58,14 +58,14 @@ int main()
                 retornoOpcion = eTramiteUrgente_listar(urgentes);
                 if(retornoOpcion < 0)
                 {
-                    printf("\nNo hay Tramites Urgentes para listar");
+                    printf("\nNo hay Tramites Urgentes para listar\n");
                 }
 
-                printf("\n\nTRAMITES REGULARES:\n");
+                printf("\nTRAMITES REGULARES:\n");
                 retornoOpcion = eTramiteRegular_listar(regulares);
                 if(retornoOpcion < 0)
                 {
-                    printf("\nNo hay Tramites Regulares para listar");
+                    printf("\nNo hay Tramites Regulares para listar\n");
                 }
                 break;
             case 6:

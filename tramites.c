@@ -3,6 +3,7 @@
 #include "../TP4/arraylist/examples/example_4/inc/ArrayList.h"
 #include "tramites.h"
 
+//Funciones Comunes a ambas
 int pedirDni(void)
 {
     int dniCliente;
@@ -81,6 +82,18 @@ int eTramiteUrgente_setDni(eTramiteUrgente* this, int dniCliente)
     return retorno;
 }
 
+int eTramiteUrgente_getDni(eTramiteUrgente* this)
+{
+    int dniCliente = -1;
+
+    if(this != NULL)
+    {
+        dniCliente = this->dni;
+    }
+
+    return dniCliente;
+}
+
 int eTramiteUrgente_setTurno(eTramiteUrgente* this, int turnoCliente)
 {
     int retorno = -1;
@@ -92,6 +105,18 @@ int eTramiteUrgente_setTurno(eTramiteUrgente* this, int turnoCliente)
     }
 
     return retorno;
+}
+
+int eTramiteUrgente_getTurno(eTramiteUrgente* this)
+{
+    int turnoCliente = -1;
+
+    if(this != NULL)
+    {
+        turnoCliente = this->turno;
+    }
+
+    return turnoCliente;
 }
 
 void eTramiteUrgente_borrar(eTramiteUrgente* this)
@@ -117,14 +142,14 @@ int eTramiteUrgente_proximoTurno(ArrayList* listaNoAtendidos, ArrayList* listaAt
         if(al_isEmpty(listaAtendidos) == 0)
         {
             posicionUltimoAtendido = al_len(listaAtendidos) - 1;
-            tramiteAtendido = al_get(listaAtendidos, posicionUltimoAtendido);
+            tramiteAtendido = (eTramiteUrgente*)al_get(listaAtendidos, posicionUltimoAtendido);
             turnoUltimoAtendido = tramiteAtendido->turno;
         }
 
         if(al_isEmpty(listaNoAtendidos) == 0)
         {
             posicionUltimoNoAtendido = al_len(listaNoAtendidos) - 1;
-            tramiteNoAtendido = al_get(listaNoAtendidos, posicionUltimoNoAtendido);
+            tramiteNoAtendido = (eTramiteUrgente*)al_get(listaNoAtendidos, posicionUltimoNoAtendido);
             turnoUltimoNoAtendido = tramiteNoAtendido->turno;
         }
     }
@@ -148,7 +173,7 @@ int eTramiteUrgente_proximoTurno(ArrayList* listaNoAtendidos, ArrayList* listaAt
 
 void eTramiteUrgente_imprimir(eTramiteUrgente* this)
 {
-    printf("%d - %d\n", this->dni, this->turno);
+    printf("%d - %d\n", eTramiteUrgente_getDni(this), eTramiteUrgente_getTurno(this));
 }
 
 int eTramiteUrgente_listar(ArrayList* listaNoAtendidos)
@@ -240,6 +265,18 @@ int eTramiteRegular_setDni(eTramiteRegular* this, int dniCliente)
     return retorno;
 }
 
+int eTramiteRegular_getDni(eTramiteRegular* this)
+{
+    int dniCliente = -1;
+
+    if(this != NULL)
+    {
+        dniCliente = this->dni;
+    }
+
+    return dniCliente;
+}
+
 int eTramiteRegular_setTurno(eTramiteRegular* this, int turnoCliente)
 {
     int retorno = -1;
@@ -251,6 +288,18 @@ int eTramiteRegular_setTurno(eTramiteRegular* this, int turnoCliente)
     }
 
     return retorno;
+}
+
+int eTramiteRegular_getTurno(eTramiteRegular* this)
+{
+    int turnoCliente = -1;
+
+    if(this != NULL)
+    {
+        turnoCliente = this->turno;
+    }
+
+    return turnoCliente;
 }
 
 void eTramiteRegular_borrar(eTramiteRegular* this)
@@ -276,14 +325,14 @@ int eTramiteRegular_proximoTurno(ArrayList* listaNoAtendidos, ArrayList* listaAt
         if(al_isEmpty(listaAtendidos) == 0)
         {
             posicionUltimoAtendido = al_len(listaAtendidos) - 1;
-            tramiteAtendido = al_get(listaAtendidos, posicionUltimoAtendido);
+            tramiteAtendido = (eTramiteRegular*)al_get(listaAtendidos, posicionUltimoAtendido);
             turnoUltimoAtendido = tramiteAtendido->turno;
         }
 
         if(al_isEmpty(listaNoAtendidos) == 0)
         {
             posicionUltimoNoAtendido = al_len(listaNoAtendidos) - 1;
-            tramiteNoAtendido = al_get(listaNoAtendidos, posicionUltimoNoAtendido);
+            tramiteNoAtendido = (eTramiteRegular*)al_get(listaNoAtendidos, posicionUltimoNoAtendido);
             turnoUltimoNoAtendido = tramiteNoAtendido->turno;
         }
     }
@@ -307,7 +356,7 @@ int eTramiteRegular_proximoTurno(ArrayList* listaNoAtendidos, ArrayList* listaAt
 
 void eTramiteRegular_imprimir(eTramiteRegular* this)
 {
-    printf("%d - %d\n", this->dni, this->turno);
+    printf("%d - %d\n", eTramiteRegular_getDni(this), eTramiteRegular_getTurno(this));
 }
 
 int eTramiteRegular_listar(ArrayList* listaNoAtendidos)
