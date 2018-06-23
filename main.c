@@ -40,29 +40,36 @@ int main()
         switch(opcion)
         {
             case 1:
-                retornoOpcion = eTramiteUrgente_agregar(urgentes, urgentesAtendidos);
+                retornoOpcion = eTramite_agregar(urgentes, urgentesAtendidos);
                 if(retornoOpcion == 0)
                 {
                     printf("\nAlta de Tramite Urgente OK");
                 }
                 break;
             case 2:
-                retornoOpcion = eTramiteRegular_agregar(regulares, regularesAtendidos);
+                retornoOpcion = eTramite_agregar(regulares, regularesAtendidos);
                 if(retornoOpcion == 0)
                 {
                     printf("\nAlta de Tramite Regular OK");
                 }
                 break;
+            case 3:
+                retornoOpcion = eTramite_proximoCliente(urgentes, urgentesAtendidos, regulares, regularesAtendidos);
+                if(retornoOpcion < 0)
+                {
+                    printf("\nNo hay Clientes para atender\n");
+                }
+                break;
             case 4:
                 printf("\nTRAMITES URGENTES:\n");
-                retornoOpcion = eTramiteUrgente_listar(urgentes);
+                retornoOpcion = eTramite_listar(urgentes);
                 if(retornoOpcion < 0)
                 {
                     printf("\nNo hay Tramites Urgentes para listar\n");
                 }
 
                 printf("\nTRAMITES REGULARES:\n");
-                retornoOpcion = eTramiteRegular_listar(regulares);
+                retornoOpcion = eTramite_listar(regulares);
                 if(retornoOpcion < 0)
                 {
                     printf("\nNo hay Tramites Regulares para listar\n");

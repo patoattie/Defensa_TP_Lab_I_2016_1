@@ -5,39 +5,21 @@ typedef struct
 {
     int turno;
     int dni;
-} eTramiteUrgente;
+} eTramite;
 
-typedef struct
-{
-    int turno;
-    int dni;
-} eTramiteRegular;
-
-//Funciones Comunes a ambas
 int pedirDni(void);
 
-//Urgentes
-eTramiteUrgente* eTramiteUrgente_nuevo(void);
-int eTramiteUrgente_agregar(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos);
-int eTramiteUrgente_setDni(eTramiteUrgente* this, int dniCliente);
-int eTramiteUrgente_getDni(eTramiteUrgente* this);
-int eTramiteUrgente_setTurno(eTramiteUrgente* this, int turnoCliente);
-int eTramiteUrgente_getTurno(eTramiteUrgente* this);
-void eTramiteUrgente_borrar(eTramiteUrgente* this);
-int eTramiteUrgente_proximoTurno(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos);
-void eTramiteUrgente_imprimir(eTramiteUrgente* this);
-int eTramiteUrgente_listar(ArrayList* listaNoAtendidos);
-
-//Regulares
-eTramiteRegular* eTramiteRegular_nuevo(void);
-int eTramiteRegular_agregar(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos);
-int eTramiteRegular_setDni(eTramiteRegular* this, int dniCliente);
-int eTramiteRegular_getDni(eTramiteRegular* this);
-int eTramiteRegular_setTurno(eTramiteRegular* this, int turnoCliente);
-int eTramiteRegular_getTurno(eTramiteRegular* this);
-void eTramiteRegular_borrar(eTramiteRegular* this);
-int eTramiteRegular_proximoTurno(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos);
-void eTramiteRegular_imprimir(eTramiteRegular* this);
-int eTramiteRegular_listar(ArrayList* listaNoAtendidos);
+eTramite* eTramite_nuevo(void);
+int eTramite_agregar(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos);
+int eTramite_setDni(eTramite* this, int dniCliente);
+int eTramite_getDni(eTramite* this);
+int eTramite_setTurno(eTramite* this, int turnoCliente);
+int eTramite_getTurno(eTramite* this);
+void eTramite_borrar(eTramite* this);
+int eTramite_proximoTurno(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos);
+void eTramite_imprimir(eTramite* this);
+int eTramite_listar(ArrayList* lista);
+int eTramite_proximoCliente(ArrayList* urgentesNoAtendidos, ArrayList* urgentesAtendidos, ArrayList* regularesNoAtendidos, ArrayList* regularesAtendidos);
+int eTramite_atenderCliente(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos);
 
 #endif // TRAMITES_H_INCLUDED
