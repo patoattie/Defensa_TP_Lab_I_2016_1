@@ -17,14 +17,18 @@ int main()
     char seguir = 's';
     int opcion = 0;
 
-    ArrayList* urgentes = al_newArrayList();
-    ArrayList* regulares = al_newArrayList();
+    ArrayList* urgentesNoAtendidos = al_newArrayList();
+    ArrayList* regularesNoAtendidos = al_newArrayList();
     ArrayList* urgentesAtendidos = al_newArrayList();
     ArrayList* regularesAtendidos = al_newArrayList();
 
     int retornoOpcion;
 
-    eTramite_hardcodeo(urgentes, urgentesAtendidos, regulares, regularesAtendidos);
+    //eTramite_hardcodeo(urgentesNoAtendidos, urgentesAtendidos, regularesNoAtendidos, regularesAtendidos);
+    eTramite_cargarDesdeArchivo(urgentesNoAtendidos, ARCHIVO_URGENTES_NO_ATENDIDOS);
+    eTramite_cargarDesdeArchivo(urgentesAtendidos, ARCHIVO_URGENTES_ATENDIDOS);
+    eTramite_cargarDesdeArchivo(regularesNoAtendidos, ARCHIVO_REGULARES_NO_ATENDIDOS);
+    eTramite_cargarDesdeArchivo(regularesAtendidos, ARCHIVO_REGULARES_ATENDIDOS);
 
     while(seguir == 's')
     {
@@ -42,21 +46,21 @@ int main()
         switch(opcion)
         {
             case 1:
-                retornoOpcion = eTramite_agregar(urgentes, urgentesAtendidos, -1);
+                retornoOpcion = eTramite_agregar(urgentesNoAtendidos, urgentesAtendidos, -1);
                 if(retornoOpcion == 0)
                 {
                     printf("\nAlta de Tramite Urgente OK");
                 }
                 break;
             case 2:
-                retornoOpcion = eTramite_agregar(regulares, regularesAtendidos, -1);
+                retornoOpcion = eTramite_agregar(regularesNoAtendidos, regularesAtendidos, -1);
                 if(retornoOpcion == 0)
                 {
                     printf("\nAlta de Tramite Regular OK");
                 }
                 break;
             case 3:
-                retornoOpcion = eTramite_proximoCliente(urgentes, urgentesAtendidos, regulares, regularesAtendidos);
+                retornoOpcion = eTramite_proximoCliente(urgentesNoAtendidos, urgentesAtendidos, regularesNoAtendidos, regularesAtendidos);
                 if(retornoOpcion < 0)
                 {
                     printf("\nNo hay Clientes para atender\n");
@@ -64,14 +68,14 @@ int main()
                 break;
             case 4:
                 printf("\nTRAMITES URGENTES:\n");
-                retornoOpcion = eTramite_listar(urgentes);
+                retornoOpcion = eTramite_listar(urgentesNoAtendidos);
                 if(retornoOpcion < 0)
                 {
                     printf("\nNo hay Tramites Urgentes para listar\n");
                 }
 
                 printf("\nTRAMITES REGULARES:\n");
-                retornoOpcion = eTramite_listar(regulares);
+                retornoOpcion = eTramite_listar(regularesNoAtendidos);
                 if(retornoOpcion < 0)
                 {
                     printf("\nNo hay Tramites Regulares para listar\n");
@@ -105,6 +109,11 @@ int main()
             system("pause");
         }
     }
+
+    eTramite_guardarEnArchivo(urgentesNoAtendidos, ARCHIVO_URGENTES_NO_ATENDIDOS);
+    eTramite_guardarEnArchivo(urgentesAtendidos, ARCHIVO_URGENTES_ATENDIDOS);
+    eTramite_guardarEnArchivo(regularesNoAtendidos, ARCHIVO_REGULARES_NO_ATENDIDOS);
+    eTramite_guardarEnArchivo(regularesAtendidos, ARCHIVO_REGULARES_ATENDIDOS);
 
     return 0;
 }

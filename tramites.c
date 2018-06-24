@@ -3,8 +3,6 @@
 #include "../TP4/arraylist/examples/example_4/inc/ArrayList.h"
 #include "tramites.h"
 
-#define CANTIDAD_DATOS_HARDCODEO 5
-
 int pedirDni(void)
 {
     int dniCliente;
@@ -287,4 +285,63 @@ int eTramite_ordenarPorDni(void* tramiteA, void* tramiteB)
     }
 
     return retorno;
+}
+
+void eTramite_cargarDesdeArchivo(ArrayList* lista, char* nombreArchivo)
+{
+    FILE* archivo;
+    eTramite* unTramite;
+
+    if(lista != NULL)
+    {
+        archivo = fopen(nombreArchivo, "rb");
+        if(archivo != NULL)
+        {
+            while(!feof(archivo))
+            {
+                unTramite = eTramite_nuevo();
+
+                if(fread(unTramite, sizeof(eTramite), 1, archivo) != 1)
+                {
+                    break;
+                }
+
+                if(al_add(lista, unTramite) < 0)
+                {
+                    break;
+                }
+            }
+
+            fclose(archivo);
+        }
+    }
+}
+
+void eTramite_guardarEnArchivo(ArrayList* lista, char* nombreArchivo)
+{
+    FILE* archivo;
+    eTramite* unTramite = NULL;
+    int i;
+
+    if(lista != NULL)
+    {
+        if(al_isEmpty(lista) == 0)
+        {
+            archivo = fopen(nombreArchivo, "wb");
+            if(archivo != NULL)
+            {
+                for(i = 0; i < al_len(lista); i++)
+                {
+                    unTramite = (eTramite*)al_get(lista, i);
+
+                    if(fwrite(unTramite, sizeof(eTramite), 1, archivo) != 1)
+                    {
+                        break;
+                    }
+                }
+
+                fclose(archivo);
+            }
+        }
+    }
 }
