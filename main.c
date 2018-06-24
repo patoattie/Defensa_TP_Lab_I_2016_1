@@ -24,6 +24,8 @@ int main()
 
     int retornoOpcion;
 
+    eTramite_hardcodeo(urgentes, urgentesAtendidos, regulares, regularesAtendidos);
+
     while(seguir == 's')
     {
         system("cls");
@@ -31,8 +33,8 @@ int main()
         printf("1- Tramite Urgente\n");
         printf("2- Tramite Regular\n");
         printf("3- Proximo Cliente\n");
-        printf("4- Listar\n");
-        printf("5- Informar\n");
+        printf("4- Listar No Atendidos\n");
+        printf("5- Informar Atendidos\n");
         printf("6- Salir\n");
 
         scanf("%d", &opcion);
@@ -40,14 +42,14 @@ int main()
         switch(opcion)
         {
             case 1:
-                retornoOpcion = eTramite_agregar(urgentes, urgentesAtendidos);
+                retornoOpcion = eTramite_agregar(urgentes, urgentesAtendidos, -1);
                 if(retornoOpcion == 0)
                 {
                     printf("\nAlta de Tramite Urgente OK");
                 }
                 break;
             case 2:
-                retornoOpcion = eTramite_agregar(regulares, regularesAtendidos);
+                retornoOpcion = eTramite_agregar(regulares, regularesAtendidos, -1);
                 if(retornoOpcion == 0)
                 {
                     printf("\nAlta de Tramite Regular OK");
@@ -70,6 +72,21 @@ int main()
 
                 printf("\nTRAMITES REGULARES:\n");
                 retornoOpcion = eTramite_listar(regulares);
+                if(retornoOpcion < 0)
+                {
+                    printf("\nNo hay Tramites Regulares para listar\n");
+                }
+                break;
+            case 5:
+                printf("\nTRAMITES URGENTES:\n");
+                retornoOpcion = eTramite_listarOrdenado(urgentesAtendidos);
+                if(retornoOpcion < 0)
+                {
+                    printf("\nNo hay Tramites Urgentes para listar\n");
+                }
+
+                printf("\nTRAMITES REGULARES:\n");
+                retornoOpcion = eTramite_listarOrdenado(regularesAtendidos);
                 if(retornoOpcion < 0)
                 {
                     printf("\nNo hay Tramites Regulares para listar\n");

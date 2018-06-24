@@ -3,6 +3,8 @@
 #include "../TP4/arraylist/examples/example_4/inc/ArrayList.h"
 #include "tramites.h"
 
+#define CANTIDAD_DATOS_HARDCODEO 5
+
 int pedirDni(void)
 {
     int dniCliente;
@@ -20,16 +22,27 @@ eTramite* eTramite_nuevo(void)
     return returnAux;
 }
 
-int eTramite_agregar(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos)
+void eTramite_hardcodeo(ArrayList* urgentesNoAtendidos, ArrayList* urgentesAtendidos, ArrayList* regularesNoAtendidos, ArrayList* regularesAtendidos)
+{
+    eTramite_agregar(urgentesNoAtendidos, urgentesAtendidos, 444);
+    eTramite_agregar(regularesNoAtendidos, regularesAtendidos, 222);
+    eTramite_agregar(urgentesNoAtendidos, urgentesAtendidos, 333);
+    eTramite_agregar(urgentesNoAtendidos, urgentesAtendidos, 888);
+    eTramite_agregar(regularesNoAtendidos, regularesAtendidos, 777);
+}
+
+int eTramite_agregar(ArrayList* listaNoAtendidos, ArrayList* listaAtendidos, int dniCliente)
 {
     int retorno = -1;
     int guardoDato;
-    int dniCliente;
     int turnoCliente;
     int huboError = 0;
     eTramite* unTramite = eTramite_nuevo();
 
-    dniCliente = pedirDni();
+    if(dniCliente < 0)
+    {
+        dniCliente = pedirDni();
+    }
 
     guardoDato = eTramite_setDni(unTramite, dniCliente);
     if(guardoDato < 0)
@@ -224,6 +237,52 @@ int eTramite_atenderCliente(ArrayList* listaNoAtendidos, ArrayList* listaAtendid
                 printf("PROXIMO CLIENTE:\n");
                 eTramite_imprimir(unTramite);
             }
+        }
+    }
+
+    return retorno;
+}
+
+int eTramite_listarOrdenado(ArrayList* lista)
+{
+    int retorno = -1;
+    ArrayList* duplicado = al_newArrayList();
+
+    if(lista != NULL)
+    {
+        if(al_isEmpty(lista) == 0)
+        {
+            duplicado = al_clone(lista);
+            retorno = al_sort(duplicado, eTramite_ordenarPorDni, 0);
+
+            if(retorno == 0)
+            {
+                retorno = eTramite_listar(duplicado);
+            }
+        }
+    }
+
+    al_deleteArrayList(duplicado);
+
+    return retorno;
+}
+
+int eTramite_ordenarPorDni(void* tramiteA, void* tramiteB)
+{
+    int retorno = 0;
+    eTramite* unTramiteA = (eTramite*) tramiteA;
+    eTramite* unTramiteB = (eTramite*) tramiteB;
+
+    if(tramiteA != NULL && tramiteB != NULL)
+    {
+        //retorno = (unTramiteA->dni > unTramiteB->dni) + ((unTramiteA->dni < unTramiteB->dni) * -1);
+        if(unTramiteA->dni < unTramiteB->dni)
+        {
+            retorno = -1;
+        }
+        else if(unTramiteA->dni > unTramiteB->dni)
+        {
+            retorno = 1;
         }
     }
 
